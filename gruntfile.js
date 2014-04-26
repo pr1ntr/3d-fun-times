@@ -8,7 +8,11 @@ module.exports = function(grunt) {
           },
           dist: {
             // the files to concatenate
-            src: ['src/**/*.js'],
+            src: [
+            'node_modules/jquery/dist/jquery.js',
+            'node_modules/three/three.js',
+            'src/**/*.js'
+            ],
             // the location of the resulting JS file
             dest: 'dist/js/<%= pkg.name %>.js'
           }
@@ -45,7 +49,7 @@ module.exports = function(grunt) {
             server: {
                 options: {
                     port:3001,
-                    base: "./example"
+                    base: "./dist"
 
                 }
             }
