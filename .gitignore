@@ -11,6 +11,8 @@ pids
 logs
 results
 
+
+maya/
 ignored_assets/
 node_modules/
 deploy/
