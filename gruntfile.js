@@ -1,17 +1,38 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        stylus: {
+            compile: {
+                options: {
+                    paths: ['src/stylus'],
+                    define: {"cdn_root" : "<%= pkg.deploy.cdn_root %>"},
+                    use: [
+                        
+                    ],
+                    import: [      //  @import 'foo', 'bar/moo', etc. into every .styl file
+                      
+                    ]
+                },
+                files: {
+                    'dist/css/styles.css': 'src/stylus/index.styl', // 1:1 compile
+                }
+            }
+       
+        },
         concat: {
           options: {
             // define a string to put between each file in the concatenated output
             separator: ';'
           },
+          
           dist: {
             // the files to concatenate
             src: [
             'node_modules/jquery/dist/jquery.js',
             'node_modules/three/three.js',
-            'src/**/*.js'
+            'src/vendor/soundmanager2/script/soundmanager2-jsmin.js',
+            'src/vendor/greensock-js/src/minified/TweenLite.min.js',
+            'src/js/**/*.js'
             ],
             // the location of the resulting JS file
             dest: 'dist/js/<%= pkg.name %>.js'
@@ -30,7 +51,7 @@ module.exports = function(grunt) {
         },
         jshint: {
             // define the files to lint
-            files: ['gruntfile.js', 'src/**/*.js'],
+            files: ['gruntfile.js', 'src/js/**/*.js' ],
             // configure JSHint (documented at http://www.jshint.com/docs/)
             options: {
             // more options here if you want to override JSHint defaults
@@ -42,8 +63,8 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint' , 'concat' , 'uglify' ]
+            files: ['<%= jshint.files %>' ,  '<%= stylus.compile.options.paths +"/**/*.styl" %>'],
+            tasks: ['jshint' , 'concat' , 'stylus' ]
         },      
         connect: {
             server: {
@@ -55,16 +76,19 @@ module.exports = function(grunt) {
             }
 
         }      
+
     });
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
+
     grunt.loadNpmTasks('grunt-contrib-connect');
 
   
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify' , 'connect' , 'watch']);
-    grunt.registerTask('dist', ['jshint', 'concat', 'uglify' ]);
+    grunt.registerTask('default', ['jshint', 'concat','stylus', 'connect' , 'watch']);
+    grunt.registerTask('dist', ['jshint', 'concat', 'uglify' , 'stylus' ]);
 
 };
