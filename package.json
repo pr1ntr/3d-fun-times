@@ -9,7 +9,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-connect": "^0.7.1",
     "three": "^0.66.2",
-    "jquery": "^2.1.0",
+    "jquery": "^3.0.0",
     "grunt-contrib-stylus": "^0.15.0"
   },
   "engines": {
